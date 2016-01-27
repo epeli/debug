@@ -5,6 +5,14 @@
  * Expose `debug()` as the module.
  */
 
+// Minimal required localStorage implementation
+var fakeStorage = {
+  debug: "*",
+  removeItem: function(key) {
+    delete this[key];
+  }
+};
+
 exports = module.exports = require('./debug');
 exports.log = log;
 exports.formatArgs = formatArgs;
@@ -14,7 +22,7 @@ exports.useColors = useColors;
 exports.storage = 'undefined' != typeof chrome
                && 'undefined' != typeof chrome.storage
                   ? chrome.storage.local
-                  : localstorage();
+                  : localstorage() || fakeStorage;
 
 /**
  * Colors.
